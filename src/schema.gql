@@ -16,7 +16,7 @@ type User {
 scalar Timestamp
 
 type Query {
-  allUsers: [User!]
+  listUsers: [User!]
 }
 
 type Mutation {

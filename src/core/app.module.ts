@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { PrismaService } from '../prisma/service';
-import { UserResolver } from '../../user/resolver';
+import { PrismaService } from './prisma.service';
+import { UserResolver } from '../user/resolver';
 import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 

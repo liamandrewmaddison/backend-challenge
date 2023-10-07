@@ -10,7 +10,7 @@ import {
 } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { User } from '../user/entity';
-import { PrismaService } from '../common/prisma/service';
+import { PrismaService } from '../core/prisma.service';
 
 @InputType()
 class UserUniqueInput {
@@ -51,7 +51,7 @@ export class UserResolver {
   };
 
   @Query((returns) => [User], { nullable: true })
-  async allUsers(@Context() ctx) {
+  async listUsers(@Context() ctx) {
     return this.prismaService.user.findMany();
   };
 }
