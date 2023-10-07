@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "updatedDate" SET DATA TYPE TIMESTAMP(3);
