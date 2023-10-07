@@ -21,10 +21,14 @@ type Query {
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  updateUser(where: UserWhereUniqueInput!, data: UserCreateInput!): User!
 }
 
 input UserCreateInput {
-  email: String!
-  name: String!
-  password: String!
+  email: String
+  name: String
+}
+
+input UserWhereUniqueInput {
+  id: Float!
 }

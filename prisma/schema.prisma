@@ -11,9 +11,9 @@ datasource db {
 }
 
 model User {
-  id            Int        @id @default(autoincrement())
-  email         String     @unique
-  name          String     @db.VarChar(250)
-  createdAt     DateTime   @default(now()) @db.Timestamp
-  updatedAt     DateTime   @default(now()) @db.Timestamp
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  name       String    @db.VarChar(250)
+  createdAt  DateTime  @default(now()) @db.Timestamp
+  updatedAt  DateTime  @default(now()) @db.Timestamp
 }

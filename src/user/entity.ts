@@ -4,7 +4,6 @@ import { IsEmail } from 'class-validator';
 
 @ObjectType()
 export class User {
-  
   @Field((type) => Int)
   id: number;
 
