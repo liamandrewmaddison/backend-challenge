@@ -22,7 +22,7 @@ A NodeJS Application running on NestJS & GraphQL. This project runs follows the 
 ## GraphQL Examples
 
 ### createUser
-```
+```graphql
 mutation {
   createUser(data: {
     email: "test@test.com",
@@ -37,7 +37,7 @@ mutation {
 ```
 
 ### updateUser
-```
+```graphql
 mutation {
   updateUser(
     where: { id: 1 },
@@ -53,7 +53,7 @@ mutation {
 ```
 
 ### getUser
-```
+```graphql
 {
   getUser(where: { id: 1 })
   {
@@ -65,7 +65,7 @@ mutation {
 ```
 
 ### listUsers
-```
+```graphql
 {
   listUsers(
     page: { page: 0 },
