@@ -81,14 +81,10 @@ export class UserResolver {
   /**
    * Creates a user in the database
    * @param data UserCreateInput
-   * @param ctx @Context()
    * @returns Promise<User>
    */
   @Mutation((returns) => User)
-  async createUser(
-    @Args('data') data: UserCreateInput,
-    @Context() ctx,
-  ): Promise<User> {
+  async createUser(@Args('data') data: UserCreateInput): Promise<User> {
     const user = await this.prismaService.user.findFirst({
       where: { email: data.email },
     });
@@ -97,37 +93,39 @@ export class UserResolver {
       throw new HttpException('Email already exists', 403);
     }
 
-    return this.prismaService.user.create({
-      data: {
-        email: data.email,
-        name: data.name,
-      },
-    }).catch(e => e);
+    return this.prismaService.user
+      .create({
+        data: {
+          email: data.email,
+          name: data.name,
+        },
+      })
+      .catch((e) => e);
   }
 
   /**
    * Updates a user when gievn an ID
    * @param where UserWhereUniqueInput
    * @param data UserUpdateInput
-   * @param ctx @Context()
    * @returns Promis<User>
    */
   @Mutation((returns) => User)
   async updateUser(
     @Args('where') where: UserWhereUniqueInput,
     @Args('data') data: UserUpdateInput,
-    @Context() ctx,
   ): Promise<User> {
-    return this.prismaService.user.update({
-      where: {
-        id: where.id,
-      },
-      data: {
-        email: data.email,
-        name: data.name,
-        updatedAt: new Date(),
-      },
-    }).catch(e => e);
+    return this.prismaService.user
+      .update({
+        where: {
+          id: where.id,
+        },
+        data: {
+          email: data.email,
+          name: data.name,
+          updatedAt: new Date(),
+        },
+      })
+      .catch((e) => e);
   }
 
   /**
@@ -137,13 +135,12 @@ export class UserResolver {
    * @returns Promise<User>
    */
   @Query((returns) => User, { nullable: true })
-  async getUser(
-    @Args('where') where: UserWhereUniqueInput,
-    @Context() ctx,
-  ): Promise<User> {
-    return this.prismaService.user.findUnique({
-      where: { id: where.id },
-    }).catch(e => e);
+  async getUser(@Args('where') where: UserWhereUniqueInput): Promise<User> {
+    return this.prismaService.user
+      .findUnique({
+        where: { id: where.id },
+      })
+      .catch((e) => e);
   }
 
   /**
@@ -158,29 +155,31 @@ export class UserResolver {
     @Args('filter', { nullable: true }) filter?: UserFilterInput,
     @Args('orderBy', { nullable: true }) orderBy?: UserFilterSortOrderInput,
   ): Promise<User[]> {
-    const operator = (filter?.email && filter?.name) ? "OR" : "AND";
+    const operator = filter?.email && filter?.name ? 'OR' : 'AND';
     const orderByUserRequest = [
-      (orderBy?.id ? { id: orderBy?.id } : null),
-      (orderBy?.createdAt ? { createdAt: orderBy?.createdAt } : null),
-      (orderBy?.updatedAt ? { updatedAt: orderBy?.updatedAt } : null),
-    ].filter(item => item !== null);
+      orderBy?.id ? { id: orderBy?.id } : null,
+      orderBy?.createdAt ? { createdAt: orderBy?.createdAt } : null,
+      orderBy?.updatedAt ? { updatedAt: orderBy?.updatedAt } : null,
+    ].filter((item) => item !== null);
     const take = 5;
     const query = {
       take,
       skip: page?.page * take || 0,
-      ...( filter ?  {
-        where: {
-          [operator]: [
-            { email: { contains: filter?.email || '', mode: 'insensitive' } },
-            { name: { contains: filter?.name || '', mode: 'insensitive' } },
-          ],
-        },
-      } : null ),
-      orderBy: [
-        ...orderByUserRequest
-      ]
+      ...(filter
+        ? {
+            where: {
+              [operator]: [
+                {
+                  email: { contains: filter?.email || '', mode: 'insensitive' },
+                },
+                { name: { contains: filter?.name || '', mode: 'insensitive' } },
+              ],
+            },
+          }
+        : null),
+      orderBy: [...orderByUserRequest],
     };
 
-    return this.prismaService.user.findMany(query).catch(e => e);
+    return this.prismaService.user.findMany(query).catch((e) => e);
   }
 }

@@ -41,10 +41,15 @@ input UserFilterSortOrderInput {
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
-  updateUser(where: UserWhereUniqueInput!, data: UserCreateInput!): User!
+  updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput!): User!
 }
 
 input UserCreateInput {
   email: String!
   name: String!
+}
+
+input UserUpdateInput {
+  email: String
+  name: String
 }
