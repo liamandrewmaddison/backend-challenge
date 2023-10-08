@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { PrismaService } from './prisma.service';
-import { UserResolver } from '../user/resolver';
 import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { UserModule } from '../user/module';
+import { PrismaModule } from './prisma.module';
 
 @Module({
   imports: [
+    UserModule,
+    PrismaModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       includeStacktraceInErrorResponses: false,
@@ -14,7 +16,5 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
     }),
   ],
-  controllers: [],
-  providers: [PrismaService, UserResolver],
 })
 export class AppModule {}
