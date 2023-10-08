@@ -106,7 +106,7 @@ describe('UsersResolver', () => {
       })
       .catch((e) => {
         expect(e.response).toEqual('Email already exists');
-        expect(e.status).toEqual(403);
+        expect(e.status).toEqual(409);
       });
   });
 

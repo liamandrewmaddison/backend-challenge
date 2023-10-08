@@ -89,7 +89,7 @@ export class UserResolver {
     });
 
     if (user) {
-      throw new HttpException('Email already exists', 403);
+      throw new HttpException('Email already exists', 409);
     }
 
     return this.prismaService.user
