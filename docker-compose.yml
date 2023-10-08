@@ -1,14 +1,30 @@
 version: '3.8'
+
 services:
-  postgres:
-    image: postgres:13
+  db:
+    image: postgres
     restart: always
     environment:
-      - POSTGRES_USER=db_user
-      - POSTGRES_PASSWORD=db_password
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    container_name: postgres
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
     ports:
       - '5432:5432'
-volumes:
-  postgres:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-docker-postgres
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres?connect_timeout=300
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    volumes:
+      - ./src:/app/src
