@@ -68,7 +68,7 @@ mutation {
 ```
 {
   listUsers(
-    page: { page: 99 },
+    page: { page: 0 },
   ) {
     id,
     name,
