@@ -143,24 +143,29 @@ export class UserResolver {
     @Args('filter', { nullable: true }) filter?: UserFilterInput,
     @Args('orderBy', { nullable: true }) orderBy?: UserFilterSortOrderInput,
   ): Promise<User[]> {
-    const OPERATOR = (filter?.email && filter?.name) ? "OR" : "AND";
-
-    return this.prismaService.user.findMany({
-      take: 50,
-      skip: 0,
+    const operator = (filter?.email && filter?.name) ? "OR" : "AND";
+    const orderByUserRequest = [
+      (orderBy?.id ? { id: orderBy?.id } : null),
+      (orderBy?.createdAt ? { createdAt: orderBy?.createdAt } : null),
+      (orderBy?.updatedAt ? { updatedAt: orderBy?.updatedAt } : null),
+    ].filter(item => item !== null);
+    const take = 5;
+    const query = {
+      take,
+      skip: page?.page * take || 0,
       ...( filter ?  {
         where: {
-          [OPERATOR]: [
+          [operator]: [
             { email: { contains: filter?.email || '', mode: 'insensitive' } },
             { name: { contains: filter?.name || '', mode: 'insensitive' } },
           ],
         },
       } : null ),
       orderBy: [
-        { createdAt: orderBy?.createdAt || 'asc' },
-        { updatedAt: orderBy?.updatedAt || 'asc' },
-        { id: orderBy?.id || 'asc' }
+        ...orderByUserRequest
       ]
-  });
+    };
+
+    return this.prismaService.user.findMany(query);
   }
 }
