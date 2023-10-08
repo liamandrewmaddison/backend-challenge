@@ -6,7 +6,7 @@ A NodeJS Application running on NestJS & GraphQL. This project runs follows the 
 
 ## Running the application
 
-##### Prequesites
+#### Prequesites
 * You must have docker installed, I'd reccommend installing [Docker Desktop](https://docs.docker.com/desktop/).
   * This will install all necessary commands and software to run the application
 
