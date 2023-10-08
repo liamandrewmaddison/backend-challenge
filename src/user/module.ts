@@ -6,4 +6,4 @@ import { PrismaService } from 'src/core/prisma.service';
   providers: [UserResolver, PrismaService],
   exports: [UserResolver],
 })
-export class UserModule {};
+export class UserModule {}
