@@ -1,8 +1,8 @@
 {
   "name": "pynea-backend-challenge",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Pynea backend challenge",
+  "author": "Liam Maddison",
   "private": true,
   "license": "UNLICENSED",
   "prisma": {

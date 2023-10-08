@@ -28,6 +28,20 @@ class UserCreateInput {
 }
 
 @InputType()
+class UserUpdateInput {
+  @Field((type) => String, { nullable: true })
+  @IsEmail()
+  email: string;
+
+  @Field((type) => String, { nullable: true })
+  @IsString()
+  name: string;
+
+  // @Field()
+  // password: string;
+}
+
+@InputType()
 class UserWhereUniqueInput {
   @Field()
   id: number;
@@ -101,7 +115,7 @@ export class UserResolver {
   @Mutation((returns) => User)
   async updateUser(
     @Args('where') where: UserWhereUniqueInput,
-    @Args('data') data: UserCreateInput,
+    @Args('data') data: UserUpdateInput,
     @Context() ctx,
   ): Promise<User> {
     return this.prismaService.user.update({
@@ -111,6 +125,7 @@ export class UserResolver {
       data: {
         email: data.email,
         name: data.name,
+        updatedAt: new Date(),
       },
     }).catch(e => e);
   }
