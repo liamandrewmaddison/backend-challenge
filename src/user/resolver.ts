@@ -88,7 +88,7 @@ export class UserResolver {
         email: data.email,
         name: data.name,
       },
-    });
+    }).catch(e => e);
   }
 
   /**
@@ -112,7 +112,7 @@ export class UserResolver {
         email: data.email,
         name: data.name,
       },
-    });
+    }).catch(e => e);
   }
 
   /**
@@ -128,7 +128,7 @@ export class UserResolver {
   ): Promise<User> {
     return this.prismaService.user.findUnique({
       where: { id: where.id },
-    });
+    }).catch(e => e);
   }
 
   /**
@@ -166,6 +166,6 @@ export class UserResolver {
       ]
     };
 
-    return this.prismaService.user.findMany(query);
+    return this.prismaService.user.findMany(query).catch(e => e);
   }
 }
