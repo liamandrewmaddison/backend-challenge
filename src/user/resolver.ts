@@ -75,7 +75,7 @@ class UserFilterPageInput {
 
 @Resolver(User)
 export class UserResolver {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {};
 
   /**
    * Creates a user in the database
