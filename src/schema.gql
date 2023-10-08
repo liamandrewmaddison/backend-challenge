@@ -16,7 +16,27 @@ type User {
 scalar Timestamp
 
 type Query {
-  listUsers: [User!]
+  getUser(where: UserWhereUniqueInput!): User
+  listUsers(page: UserFilterPageInput!, filter: UserFilterInput, orderBy: UserFilterSortOrderInput): [User!]
+}
+
+input UserWhereUniqueInput {
+  id: Float!
+}
+
+input UserFilterPageInput {
+  page: Float!
+}
+
+input UserFilterInput {
+  name: String
+  email: String
+}
+
+input UserFilterSortOrderInput {
+  id: String
+  createdAt: String
+  updatedAt: String
 }
 
 type Mutation {
@@ -25,10 +45,6 @@ type Mutation {
 }
 
 input UserCreateInput {
-  email: String
-  name: String
-}
-
-input UserWhereUniqueInput {
-  id: Float!
+  email: String!
+  name: String!
 }
