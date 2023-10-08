@@ -79,3 +79,19 @@ mutation {
   }
 }
 ```
+
+```graphql
+{
+  listUsers(
+    page: { page: 0 },
+    filter: { name: "j" },
+    orderBy: { id: "asc" },
+  ) {
+    id,
+    name,
+    email,
+    createdAt,
+    updatedAt
+  }
+}
+```
