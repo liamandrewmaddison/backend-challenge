@@ -91,6 +91,7 @@ describe('UsersResolver', () => {
     const resolver = await createResolverMock(prismaServiceMock);
     const result = await resolver.createUser({
       email: 'test@test.com',
+      password: 'test',
       name: 'test',
     });
 
@@ -102,6 +103,7 @@ describe('UsersResolver', () => {
     await resolver
       .createUser({
         email: 'test@test.com',
+        password: 'test',
         name: 'test',
       })
       .catch((e) => {

@@ -11,6 +11,7 @@ import { HttpException, Inject } from '@nestjs/common';
 import { User } from '../user/entity';
 import { PrismaService } from '../core/prisma.service';
 import { IsEmail, IsString } from 'class-validator';
+import { hashPassword } from '../core/security.utilities';
 
 @InputType()
 class UserCreateInput {
@@ -76,7 +77,7 @@ class UserFilterPageInput {
 
 @Resolver(User)
 export class UserResolver {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) {};
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   /**
    * Creates a user in the database
@@ -93,12 +94,14 @@ export class UserResolver {
       throw new HttpException('Email already exists', 409);
     }
 
+    const password = await hashPassword(data.password);
+
     return this.prismaService.user
       .create({
         data: {
           email: data.email,
           name: data.name,
-          password: data.password
+          password,
         },
       })
       .catch((e) => e);

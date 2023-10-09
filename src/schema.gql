@@ -16,6 +16,16 @@ type User {
 """
 scalar Timestamp
 
+type AuthUser {
+  id: Int!
+  email: String!
+  name: String!
+  password: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  token: String!
+}
+
 type Query {
   getUser(where: UserWhereUniqueInput!): User
   listUsers(page: UserFilterPageInput!, filter: UserFilterInput, orderBy: UserFilterSortOrderInput): [User!]
@@ -43,6 +53,7 @@ input UserFilterSortOrderInput {
 type Mutation {
   createUser(data: UserCreateInput!): User!
   updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput!): User!
+  login(data: UserLoginInput!): AuthUser
 }
 
 input UserCreateInput {
@@ -54,4 +65,9 @@ input UserCreateInput {
 input UserUpdateInput {
   email: String
   name: String
+}
+
+input UserLoginInput {
+  email: String!
+  password: String!
 }
