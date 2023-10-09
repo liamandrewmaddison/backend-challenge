@@ -27,12 +27,14 @@ A NodeJS Application running on NestJS & GraphQL. This project runs follows the 
 mutation {
   createUser(data: {
     email: "test@test.com",
-    name: "Liam Maddison"
+    name: "Liam Maddison",
+    password: "test"
   })
   {
     id,
     name,
-    email
+    email,
+    password,
   }
 }
 ```
@@ -54,6 +56,17 @@ mutation {
 ```
 
 ### getUser
+
+This method is protected by an Auth Guard, so you need to pass authorization token:
+
+```json
+{
+  "Authorization": "Bearer ${token}"
+}
+```
+
+You can check how to login below.
+
 ```graphql
 {
   getUser(where: { id: 1 })
@@ -92,6 +105,25 @@ mutation {
     email,
     createdAt,
     updatedAt
+  }
+}
+```
+
+### login
+
+Here we can login and extract the token for usage on the getUser endpoint
+
+```graphql
+mutation {
+  login(data: {
+    email: "test@test.com",
+    password: "test",
+  })
+  {
+    id,
+    email,
+    name,
+    token,
   }
 }
 ```

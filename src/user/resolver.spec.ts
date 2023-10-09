@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../core/prisma.service';
 import { UserResolver } from './resolver';
 import { User } from './entity';
-import { HttpException } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 
 const makeUser = (attributes) => {
   return {
@@ -55,6 +55,7 @@ const PrismaServiceMock = {
 
 const createResolverMock = async (prismaServiceMock) => {
   const module: TestingModule = await Test.createTestingModule({
+    imports: [JwtModule],
     providers: [
       UserResolver,
       { provide: PrismaService, useValue: prismaServiceMock },

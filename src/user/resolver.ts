@@ -12,7 +12,7 @@ import { User } from '../user/entity';
 import { PrismaService } from '../core/prisma.service';
 import { IsEmail, IsString } from 'class-validator';
 import { hashPassword } from '../core/security.utilities';
-import { AuthGuard } from 'src/auth/guards';
+import { AuthGuard } from '../auth/guards';
 
 @InputType()
 class UserCreateInput {
@@ -133,7 +133,6 @@ export class UserResolver {
   /**
    * Returns a user based on ID
    * @param where UserWhereUniqueInput
-   * @param ctx @Context()
    * @returns Promise<User>
    */
   @UseGuards(AuthGuard)
