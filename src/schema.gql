@@ -6,6 +6,7 @@ type User {
   id: Int!
   email: String!
   name: String!
+  password: String!
   createdAt: Timestamp!
   updatedAt: Timestamp!
 }
@@ -14,6 +15,16 @@ type User {
 `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
 """
 scalar Timestamp
+
+type AuthUser {
+  id: Int!
+  email: String!
+  name: String!
+  password: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  token: String!
+}
 
 type Query {
   getUser(where: UserWhereUniqueInput!): User
@@ -42,14 +53,21 @@ input UserFilterSortOrderInput {
 type Mutation {
   createUser(data: UserCreateInput!): User!
   updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput!): User!
+  login(data: UserLoginInput!): AuthUser
 }
 
 input UserCreateInput {
   email: String!
   name: String!
+  password: String!
 }
 
 input UserUpdateInput {
   email: String
   name: String
+}
+
+input UserLoginInput {
+  email: String!
+  password: String!
 }

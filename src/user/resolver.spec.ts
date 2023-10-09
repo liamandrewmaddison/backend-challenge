@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../core/prisma.service';
 import { UserResolver } from './resolver';
 import { User } from './entity';
-import { HttpException } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 
 const makeUser = (attributes) => {
   return {
@@ -55,6 +55,7 @@ const PrismaServiceMock = {
 
 const createResolverMock = async (prismaServiceMock) => {
   const module: TestingModule = await Test.createTestingModule({
+    imports: [JwtModule],
     providers: [
       UserResolver,
       { provide: PrismaService, useValue: prismaServiceMock },
@@ -91,6 +92,7 @@ describe('UsersResolver', () => {
     const resolver = await createResolverMock(prismaServiceMock);
     const result = await resolver.createUser({
       email: 'test@test.com',
+      password: 'test',
       name: 'test',
     });
 
@@ -102,11 +104,12 @@ describe('UsersResolver', () => {
     await resolver
       .createUser({
         email: 'test@test.com',
+        password: 'test',
         name: 'test',
       })
       .catch((e) => {
         expect(e.response).toEqual('Email already exists');
-        expect(e.status).toEqual(403);
+        expect(e.status).toEqual(409);
       });
   });
 

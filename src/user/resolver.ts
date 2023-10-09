@@ -7,10 +7,12 @@ import {
   InputType,
   Field,
 } from '@nestjs/graphql';
-import { HttpException, Inject } from '@nestjs/common';
+import { HttpException, Inject, UseGuards } from '@nestjs/common';
 import { User } from '../user/entity';
 import { PrismaService } from '../core/prisma.service';
 import { IsEmail, IsString } from 'class-validator';
+import { hashPassword } from '../core/security.utilities';
+import { AuthGuard } from '../auth/guards';
 
 @InputType()
 class UserCreateInput {
@@ -22,8 +24,9 @@ class UserCreateInput {
   @IsString()
   name: string;
 
-  // @Field()
-  // password: string;
+  @Field((type) => String)
+  @IsString()
+  password: string;
 }
 
 @InputType()
@@ -35,9 +38,6 @@ class UserUpdateInput {
   @Field((type) => String, { nullable: true })
   @IsString()
   name: string;
-
-  // @Field()
-  // password: string;
 }
 
 @InputType()
@@ -89,14 +89,17 @@ export class UserResolver {
     });
 
     if (user) {
-      throw new HttpException('Email already exists', 403);
+      throw new HttpException('Email already exists', 409);
     }
+
+    const password = await hashPassword(data.password);
 
     return this.prismaService.user
       .create({
         data: {
           email: data.email,
           name: data.name,
+          password,
         },
       })
       .catch((e) => e);
@@ -130,9 +133,9 @@ export class UserResolver {
   /**
    * Returns a user based on ID
    * @param where UserWhereUniqueInput
-   * @param ctx @Context()
    * @returns Promise<User>
    */
+  @UseGuards(AuthGuard)
   @Query((returns) => User, { nullable: true })
   async getUser(@Args('where') where: UserWhereUniqueInput): Promise<User> {
     return this.prismaService.user
