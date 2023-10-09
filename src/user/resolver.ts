@@ -7,11 +7,12 @@ import {
   InputType,
   Field,
 } from '@nestjs/graphql';
-import { HttpException, Inject } from '@nestjs/common';
+import { HttpException, Inject, UseGuards } from '@nestjs/common';
 import { User } from '../user/entity';
 import { PrismaService } from '../core/prisma.service';
 import { IsEmail, IsString } from 'class-validator';
 import { hashPassword } from '../core/security.utilities';
+import { AuthGuard } from 'src/auth/guards';
 
 @InputType()
 class UserCreateInput {
@@ -37,9 +38,6 @@ class UserUpdateInput {
   @Field((type) => String, { nullable: true })
   @IsString()
   name: string;
-
-  // @Field()
-  // password: string;
 }
 
 @InputType()
@@ -138,6 +136,7 @@ export class UserResolver {
    * @param ctx @Context()
    * @returns Promise<User>
    */
+  @UseGuards(AuthGuard)
   @Query((returns) => User, { nullable: true })
   async getUser(@Args('where') where: UserWhereUniqueInput): Promise<User> {
     return this.prismaService.user
