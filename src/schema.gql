@@ -6,6 +6,7 @@ type User {
   id: Int!
   email: String!
   name: String!
+  password: String!
   createdAt: Timestamp!
   updatedAt: Timestamp!
 }
@@ -47,6 +48,7 @@ type Mutation {
 input UserCreateInput {
   email: String!
   name: String!
+  password: String!
 }
 
 input UserUpdateInput {

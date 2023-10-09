@@ -22,8 +22,9 @@ class UserCreateInput {
   @IsString()
   name: string;
 
-  // @Field()
-  // password: string;
+  @Field((type) => String)
+  @IsString()
+  password: string;
 }
 
 @InputType()
@@ -97,6 +98,7 @@ export class UserResolver {
         data: {
           email: data.email,
           name: data.name,
+          password: data.password
         },
       })
       .catch((e) => e);

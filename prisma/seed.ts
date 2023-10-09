@@ -11,6 +11,7 @@ function createRandomUser(): CreateUser {
   return {
     name: faker.internet.displayName(),
     email: faker.internet.email(),
+    password: faker.internet.password(),
     createdAt: faker.date.past(),
     updatedAt: faker.date.future(),
   };
@@ -23,7 +24,6 @@ async function main() {
   });
 
   console.log({ users });
-
 
   await prisma.user.createMany({ data: users });
 }
