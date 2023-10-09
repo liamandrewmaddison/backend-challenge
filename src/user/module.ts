@@ -7,4 +7,5 @@ import { PrismaModule } from '../core/prisma.module';
   providers: [UserResolver],
   exports: [UserResolver],
 })
+
 export class UserModule {}
